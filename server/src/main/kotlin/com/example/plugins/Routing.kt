@@ -15,13 +15,7 @@ fun Application.configureRouting() {
   routing {
     route("/history") {
       get {
-        call.respondText(
-          "Missing or malformed number of history entries to show",
-          status = HttpStatusCode.BadRequest
-        )
-      }
-      get("{n}") {
-        val n = call.parameters["n"] ?: return@get call.respondText(
+        val n = call.request.queryParameters["n"]?.toIntOrNull() ?: return@get call.respondText(
           "Missing or malformed number of history entries to show",
           status = HttpStatusCode.BadRequest
         )
