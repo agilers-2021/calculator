@@ -32,7 +32,9 @@ fun Application.configureRouting() {
       post {
         val evalRequest = call.receive<EvalRequest>()
         val result = EvaluationHandler.evaluateExpression(evalRequest)
-        EvaluationStorage.put(result)
+        if (result is ExpressionResultModel) {
+          EvaluationStorage.put(result)
+        }
         when (result) {
           is ExpressionErrorModel -> call.respondText(result.msg, status = HttpStatusCode.BadRequest)
           is ExpressionResultModel -> call.respondText("${result.result}", status = HttpStatusCode.Created)
