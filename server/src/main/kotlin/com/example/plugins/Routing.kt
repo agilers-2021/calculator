@@ -1,5 +1,6 @@
 package com.example.plugins
 
+import com.example.Master
 import com.example.models.EvalRequest
 import com.example.models.ExpressionErrorModel
 import com.example.models.ExpressionResultModel
@@ -24,7 +25,7 @@ fun Application.configureRouting() {
           "Missing or malformed number of history entries to show",
           status = HttpStatusCode.BadRequest
         )
-        val history = History(EvaluationStorage.takeLast(n))
+        val history = History(Master.takeLast(n))
         call.respond(history)
       }
     }
@@ -33,7 +34,7 @@ fun Application.configureRouting() {
         val evalRequest = call.receive<EvalRequest>()
         val result = EvaluationHandler.evaluateExpression(evalRequest)
         if (result is ExpressionResultModel) {
-          EvaluationStorage.put(result)
+          Master.put(result)
         }
         when (result) {
           is ExpressionErrorModel -> call.respondText(result.msg, status = HttpStatusCode.BadRequest)

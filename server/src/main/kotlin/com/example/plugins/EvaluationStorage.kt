@@ -9,7 +9,7 @@ import com.example.models.ExpressionResultModel
 object EvaluationStorage {
 
   object ExpressionTable : Table() {
-    val id = integer("id").autoIncrement()
+    val id = integer("id").primaryKey()
     val expression = varchar("text", length=100)
     val result = double("result")
   }
@@ -18,6 +18,7 @@ object EvaluationStorage {
 
   fun put(expr: ExpressionResultModel) {
     ExpressionTable.insert {
+      it[id] = 1
       it[expression] = expr.expression
       it[result] = expr.result
     }
