@@ -24,6 +24,7 @@ dependencies {
   implementation("ch.qos.logback:logback-classic:$logback_version")
   implementation("io.ktor:ktor-serialization:$ktor_version")
   implementation("org.mariuszgromada.math:MathParser.org-mXparser:4.0.0")
+  implementation("org.jetbrains.exposed:exposed:0.17.13")
   testImplementation("io.ktor:ktor-server-tests:$ktor_version")
   testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlin_version")
 }
