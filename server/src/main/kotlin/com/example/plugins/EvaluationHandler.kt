@@ -4,7 +4,6 @@ import com.example.models.EvalRequest
 import com.example.models.Expression
 import com.example.models.ExpressionErrorModel
 import com.example.models.ExpressionResultModel
-import java.lang.Exception
 import org.mariuszgromada.math.mxparser.Expression as Expr
 
 object EvaluationHandler {
