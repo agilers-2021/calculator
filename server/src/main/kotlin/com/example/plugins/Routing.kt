@@ -23,13 +23,15 @@ fun Application.configureRouting() {
         call.respond(history)
       }
     }
-    post("/eval") {
-      val evalRequest = call.receive<EvalRequest>()
-      val result = EvaluationHandler.evaluateExpression(evalRequest)
-      EvaluationStorage.put(result)
-      when(result) {
-        is ExpressionErrorModel -> call.respondText(result.msg, status = HttpStatusCode.BadRequest)
-        is ExpressionResultModel -> call.respondText("${result.result}", status = HttpStatusCode.Created)
+    route("/eval") {
+      post {
+        val evalRequest = call.receive<EvalRequest>()
+        val result = EvaluationHandler.evaluateExpression(evalRequest)
+        EvaluationStorage.put(result)
+        when (result) {
+          is ExpressionErrorModel -> call.respondText(result.msg, status = HttpStatusCode.BadRequest)
+          is ExpressionResultModel -> call.respondText("${result.result}", status = HttpStatusCode.Created)
+        }
       }
     }
   }
