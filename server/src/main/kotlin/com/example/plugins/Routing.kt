@@ -25,7 +25,7 @@ fun Application.configureRouting() {
           "Missing or malformed number of history entries to show",
           status = HttpStatusCode.BadRequest
         )
-        val history = History(Master.takeLast(n))
+        val history = History.create(Master.takeLast(n))
         call.respond(history)
       }
     }
