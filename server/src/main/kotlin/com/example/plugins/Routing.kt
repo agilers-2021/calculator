@@ -6,6 +6,7 @@ import com.example.models.ExpressionResultModel
 import com.example.models.History
 import io.ktor.application.*
 import io.ktor.http.*
+import io.ktor.http.content.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
@@ -13,6 +14,10 @@ import io.ktor.routing.*
 fun Application.configureRouting() {
   // Starting point for a Ktor app:
   routing {
+    static {
+      default("client/index.html")
+      files("client")
+    }
     route("/history") {
       get {
         val n = call.request.queryParameters["n"]?.toIntOrNull() ?: return@get call.respondText(
