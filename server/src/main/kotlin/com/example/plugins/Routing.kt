@@ -19,25 +19,17 @@ fun Application.configureRouting() {
           "Missing or malformed number of history entries to show",
           status = HttpStatusCode.BadRequest
         )
-        //TODO - retrieve from data base
-        call.respond(
-          History(
-            listOf(
-              ExpressionResultModel("2", 2.0),
-              ExpressionErrorModel("kek", "no keks allowed here")
-            )
-          )
-        )
+        val history = History(EvaluationStorage.takeLast(n))
+        call.respond(history)
       }
     }
     post("/eval") {
       val evalRequest = call.receive<EvalRequest>()
-      try {
-        val result = EvaluatingHandler.evaluateExpression(evalRequest)
-        //TODO - store to db
-        call.respondText("$result", status = HttpStatusCode.Created)
-      } catch (e: Exception) {
-        call.respondText("error", status = HttpStatusCode.BadRequest)
+      val result = EvaluationHandler.evaluateExpression(evalRequest)
+      EvaluationStorage.put(result)
+      when(result) {
+        is ExpressionErrorModel -> call.respondText(result.msg, status = HttpStatusCode.BadRequest)
+        is ExpressionResultModel -> call.respondText("${result.result}", status = HttpStatusCode.Created)
       }
     }
   }
